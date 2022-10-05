@@ -12,16 +12,13 @@ const { Option } = Select
 
 const CryptoDetails = () => {
   const { coinId } = useParams()
-
   const [timePeriod, setTimePeriod] = useState('7d')
   const { data, isFetching } = useGetCryptoDetailsQuery(coinId)
-  const { data: coinHistory } = useGetCryptoHistoryQuery({coinId, timePeriod})
+  const { data:coinHistory, isLoading  } = useGetCryptoHistoryQuery({coinId, timePeriod})
   const cryptoDetails = data?.data?.coin
 
-  console.log(cryptoDetails)
-
   if (isFetching) return 'loading...'
-
+  
   const time = ['3h', '24h', '7d', '30d', '1y', '3m', '3y', '5y'];
 
   const stats = [
@@ -58,7 +55,7 @@ const CryptoDetails = () => {
       >
         {time.map((period) => <Option key={period}>{period}</Option>)}
       </Select>
-      <LineChart coinHistory={coinHistory} currentPrice={millify(cryptoDetails.price)} coinName={cryptoDetails.name}/>
+      {isLoading ? <p>loading</p> :<LineChart coinHistory={coinHistory} currentPrice={millify(cryptoDetails?.price)} coinName={cryptoDetails?.name}/>}
       <Row gutter={[32, 32]} className='stat-container'>
         <Col xs={24} s={12} lg={12} className='coin-value-statistics'>
           <Col className='coin-value-statistics-heading'>
@@ -67,8 +64,8 @@ const CryptoDetails = () => {
             </Title>
             <p>An overview showing the statistics of {cryptoDetails.name},</p>
           </Col>
-          {stats.map(({ icon, title, value }) => (
-            <Col className="coin-stats">
+          {stats.map(({ icon, title, value }, index) => (
+            <Col key={index} className="coin-stats">
               <Col className="coin-stats-name">
                 <Text>{icon}</Text>
                 <Text>{title}</Text>
@@ -85,8 +82,8 @@ const CryptoDetails = () => {
             </Title>
             <p>An overview showing the statistics of other cryptocurrencies</p>
           </Col>
-          {genericStats.map(({ icon, title, value }) => (
-            <Col className="coin-stats">
+          {genericStats.map(({ icon, title, value }, index) => (
+            <Col key={index} className="coin-stats">
               <Col className="coin-stats-name">
                 <Text>{icon}</Text>
                 <Text>{title}</Text>
@@ -107,8 +104,8 @@ const CryptoDetails = () => {
           <Title level={3} className='coin-details-heading'>
             Related Links
           </Title>
-          {cryptoDetails.links.map((link) => (
-            <Row className='coin-link' key={link.name}>
+          {cryptoDetails.links.map((link, index) => (
+            <Row key={index} className='coin-link'>
               <Title level={5} className='link-name'>
                 {link.type}
               </Title>
