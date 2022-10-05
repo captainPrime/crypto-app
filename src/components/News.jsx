@@ -19,14 +19,14 @@ const News = ({ simplified }) => {
 
   if (!cryptoNews?.value) return 'loading...'
 
-  console.log(cryptoNews.value)
   return (
     <>
       <div style={{marginBottom: 20}}>
           {!simplified && (
         
         <Select
-          showSearch className='select-news'
+          showSearch 
+          className='select-news'
           placeholder="select a crypto"
           optionFilterProp='children'
           onChange={(value) => setNewsCategory(value)}
