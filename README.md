@@ -1,6 +1,6 @@
-# Getting Started with Create React App
+# REACT CRYPTO APP
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+firstly clone the project
 
 ## Available Scripts
 
